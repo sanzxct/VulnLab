@@ -20,5 +20,7 @@ Thumbs.db
 course/
 
 ANSWER_KEY.md
+INSTRUCTOR_NOTES.md
+udemy.txt
 # NOTE: app/git_exposed/dotgit IS committed on purpose — it is the exposed-git
 # recon artifact (#11a), served at /.git. It is a plain dir, not a real .git.
