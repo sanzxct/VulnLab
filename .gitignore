@@ -18,7 +18,6 @@ app/src/public/uploads/*
 .DS_Store
 Thumbs.db
 course/
-
 ANSWER_KEY.md
 INSTRUCTOR_NOTES.md
 udemy.txt
