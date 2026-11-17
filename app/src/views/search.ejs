@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+
+<!-- #3 reflected XSS: q is echoed below with <%%- %> (no escaping). -->
+<h1>Search results for: <%- q %></h1>
+
+<% if (dbError) { %>
+<div class="error-box">
+  <strong>Database error:</strong>
+  <div class="pre"><%= dbError %></div>
+  <p class="muted">Query executed:</p>
+  <div class="pre"><%= sql %></div>
+</div>
+<% } %>
+
+<% if (results && results.length) { %>
+<div class="grid">
+  <% results.forEach(function(p){ %>
+    <a class="card" href="/product/<%= p.id %>">
+      <img src="<%= p.image_url %>" alt="">
+      <div class="body">
+        <div class="cat"><%= p.category %></div>
+        <div class="name"><%= p.name %></div>
+        <div class="price">$<%= Number(p.price).toFixed(2) %></div>
+      </div>
+    </a>
+  <% }) %>
+</div>
+<% } else if (!dbError) { %>
+  <p class="muted">No products matched “<%= q %>”.</p>
+<% } %>
+
+<%- include('partials/footer') %>

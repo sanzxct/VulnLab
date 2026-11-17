@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+
+<% if (typeof heading === 'undefined') { %>
+<section class="hero">
+  <h1>ByteBazaar <span class="muted">— buy, sell, get hacked responsibly</span></h1>
+  <p>The Positive Hack Camp marketplace. Browse gear, leave reviews, place orders — and find every bug we (accidentally on purpose) left in.</p>
+</section>
+<% } else { %>
+<h1><%= heading %></h1>
+<% } %>
+
+<% if (typeof categories !== 'undefined' && categories.length) { %>
+<div class="panel">
+  <strong>Categories:</strong>
+  <% categories.forEach(function(c){ %>
+    <a class="badge" href="/category/<%= encodeURIComponent(c) %>"><%= c %></a>
+  <% }) %>
+</div>
+<% } %>
+
+<div class="grid">
+  <% products.forEach(function(p){ %>
+    <a class="card" href="/product/<%= p.id %>">
+      <img src="<%= p.image_url %>" alt="">
+      <div class="body">
+        <div class="cat"><%= p.category %></div>
+        <div class="name"><%= p.name %></div>
+        <div class="price">$<%= Number(p.price).toFixed(2) %></div>
+      </div>
+    </a>
+  <% }) %>
+</div>
+<% if (!products.length) { %><p class="muted">No products found.</p><% } %>
+
+<%- include('partials/footer') %>

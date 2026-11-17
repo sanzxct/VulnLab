@@ -1,0 +1,49 @@
+<%- include('partials/header') %>
+<h1>Order #<%= order.id %></h1>
+<div class="row">
+  <div class="col">
+    <div class="panel">
+      <h2>Items</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead>
+        <tbody>
+        <% items.forEach(function(it){ %>
+          <tr><td><%= it.name %></td><td><%= it.quantity %></td><td>$<%= Number(it.price).toFixed(2) %></td></tr>
+        <% }) %>
+        </tbody>
+      </table>
+      <table style="margin-top:12px">
+        <tr><td>Subtotal</td><td style="text-align:right">$<%= Number(order.subtotal).toFixed(2) %></td></tr>
+        <tr><td>Discount</td><td style="text-align:right">-$<%= Number(order.discount).toFixed(2) %></td></tr>
+        <tr><th>Total</th><th style="text-align:right">$<%= Number(order.total).toFixed(2) %></th></tr>
+      </table>
+    </div>
+  </div>
+  <div class="col" style="max-width:340px">
+    <div class="panel">
+      <h2>Shipping</h2>
+      <p><strong><%= order.ship_name %></strong><br>
+      <%= order.ship_address %><br>
+      <%= order.ship_city %> <%= order.ship_country %></p>
+      <% if (order.gift_message) { %>
+        <label>Gift message</label>
+        <p class="muted"><%= order.gift_message %></p>
+      <% } %>
+      <p><span class="badge"><%= order.status %></span></p>
+      <% if (order.status !== 'cancelled') { %>
+        <%#
+          #12 BFLA discovery breadcrumb. EJS comment on purpose — this block is
+          NOT sent to the browser, unlike the other #N markers in these views.
+          #12 is the unaided session-3 exercise, so students must find the
+          missing ownership check by replaying this request with another id;
+          naming it in the HTML source would hand them the answer.
+          This button is the only place POST /api/orders/{id}/cancel is exposed.
+        %>
+        <form action="/api/orders/<%= order.id %>/cancel" method="post" class="stack">
+          <button class="btn ghost">Cancel this order</button>
+        </form>
+      <% } %>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

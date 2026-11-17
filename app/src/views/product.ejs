@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+
+<div class="row">
+  <div class="col" style="max-width:420px">
+    <div class="panel"><img src="<%= product.image_url %>" alt="" style="width:100%;border-radius:8px"></div>
+  </div>
+  <div class="col">
+    <div class="badge"><%= product.category %></div>
+    <h1><%= product.name %></h1>
+    <div class="pricebig">$<%= Number(product.price).toFixed(2) %></div>
+    <p class="muted">Sold by <%= product.seller_name || 'ByteBazaar' %> · <%= product.stock %> in stock</p>
+    <p><%= product.description %></p>
+    <% if (currentUser) { %>
+      <form action="/cart/add" method="post" class="inline">
+        <input type="hidden" name="product_id" value="<%= product.id %>">
+        <input type="hidden" name="quantity" value="1">
+        <button class="btn">Add to cart</button>
+      </form>
+    <% } else { %>
+      <p class="muted"><a href="/login">Log in</a> to add to cart.</p>
+    <% } %>
+  </div>
+</div>
+
+<div class="panel" id="reviews">
+  <h2>Reviews (<%= reviews.length %>)</h2>
+  <% reviews.forEach(function(r){ %>
+    <div class="review">
+      <div class="who"><%= r.author_name %> <span class="stars"><%= '★'.repeat(r.rating) %></span></div>
+      <!-- #4 stored XSS: review body rendered unescaped with <%%- %> -->
+      <div class="text"><%- r.body %></div>
+    </div>
+  <% }) %>
+  <% if (!reviews.length) { %><p class="muted">No reviews yet — be the first.</p><% } %>
+
+  <p class="muted">Lab note: this review feed shows the shop's own reviews plus
+    <strong>yours</strong> — other students' reviews are hidden from you, and yours from
+    them, so one person's payload can't lock up the page for the whole room. The
+    stored-XSS bug itself is untouched: your review body is still saved raw and
+    still rendered unescaped. On a real site there is no such filter, and every
+    visitor to this page would execute whatever you stored.</p>
+
+  <h3>Leave a review</h3>
+  <% if (!currentUser) { %>
+    <p class="muted"><a href="/login?next=<%= encodeURIComponent('/product/' + product.id) %>">Log in</a>
+      to post a review.</p>
+  <% } else { %>
+  <form action="/product/<%= product.id %>/review" method="post" class="stack">
+    <label>Rating</label>
+    <select name="rating">
+      <option value="5">★★★★★</option>
+      <option value="4">★★★★</option>
+      <option value="3">★★★</option>
+      <option value="2">★★</option>
+      <option value="1">★</option>
+    </select>
+    <label>Your review</label>
+    <textarea name="body" placeholder="Tell other shoppers what you think…"></textarea>
+    <button class="btn">Post review</button>
+  </form>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

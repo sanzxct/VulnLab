@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+<h1>Admin · Site statistics</h1>
+<div class="notice">You reached the admin panel. If your account isn't an admin, that's <strong>broken access control</strong> — there's no server-side role check here.</div>
+<div class="grid">
+  <div class="card"><div class="body"><div class="cat">users</div><div class="pricebig"><%= stats.users %></div></div></div>
+  <div class="card"><div class="body"><div class="cat">products</div><div class="pricebig"><%= stats.products %></div></div></div>
+  <div class="card"><div class="body"><div class="cat">orders</div><div class="pricebig"><%= stats.orders %></div></div></div>
+  <div class="card"><div class="body"><div class="cat">revenue</div><div class="pricebig">$<%= stats.revenue.toFixed(2) %></div></div></div>
+</div>
+<div class="panel" style="margin-top:18px">
+  <p><a href="/admin/users">→ User management</a></p>
+  <p class="muted">These figures come from the JSON twin of this page,
+    <code><a href="/api/admin/stats">/api/admin/stats</a></code> — which skips the
+    role check too, and answers with no session at all.</p>
+  <p>Reward flag:</p>
+  <div class="flag"><%= flag %></div>
+</div>
+<%- include('partials/footer') %>

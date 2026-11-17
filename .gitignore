@@ -1,0 +1,24 @@
+# dependencies (installed inside the Docker image, never committed)
+node_modules/
+**/node_modules/
+npm-debug.log
+*.log
+
+# runtime avatar uploads (keep the dir, not the files)
+app/src/public/uploads/*
+!app/src/public/uploads/.gitkeep
+
+# machine-local Claude Code settings (project handoff docs ARE committed)
+.claude/settings.local.json
+
+# host port mapping chosen by scripts/start.sh (machine-specific)
+.env
+
+# OS junk
+.DS_Store
+Thumbs.db
+course/
+
+ANSWER_KEY.md
+# NOTE: app/git_exposed/dotgit IS committed on purpose — it is the exposed-git
+# recon artifact (#11a), served at /.git. It is a plain dir, not a real .git.

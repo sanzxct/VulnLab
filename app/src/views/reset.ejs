@@ -1,0 +1,24 @@
+<%- include('partials/header') %>
+<div class="panel" style="max-width:460px;margin:0 auto">
+  <h1>Reset password</h1>
+  <% if (done) { %>
+    <div class="notice">Password for <strong><%= user.username %></strong> has been changed. You can now log in.</div>
+    <p>Reward flag:</p>
+    <div class="flag"><%= flag %></div>
+  <% } else { %>
+    <% if (typeof error !== 'undefined' && error) { %><div class="error-box"><%= error %></div><% } %>
+    <% if (user) { %>
+      <div class="notice">Resetting password for account: <strong><%= user.username %></strong></div>
+    <% } else { %>
+      <div class="notice muted">Enter a valid reset token to continue.</div>
+    <% } %>
+    <form action="/reset-password" method="post" class="stack">
+      <label>Reset token</label>
+      <input type="text" name="token" value="<%= token %>">
+      <label>New password</label>
+      <input type="password" name="password">
+      <button class="btn">Set new password</button>
+    </form>
+  <% } %>
+</div>
+<%- include('partials/footer') %>

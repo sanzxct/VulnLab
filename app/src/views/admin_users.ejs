@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+<h1>Admin · User management</h1>
+<div class="panel">
+  <table>
+    <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Admin?</th><th>Name</th><th>Member since</th></tr></thead>
+    <tbody>
+    <% users.forEach(function(u){ %>
+      <tr>
+        <td><%= u.id %></td>
+        <td><%= u.username %></td>
+        <td><%= u.email %></td>
+        <td><span class="badge"><%= u.role %></span></td>
+        <td><%= u.is_admin ? '✔' : '' %></td>
+        <td class="muted"><%= u.full_name %></td>
+        <td class="muted"><%= new Date(u.member_since).toISOString().slice(0,10) %></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+</div>
+<div class="panel"><p>Reward flag:</p><div class="flag"><%= flag %></div></div>
+<%- include('partials/footer') %>

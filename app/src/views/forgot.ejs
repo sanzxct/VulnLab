@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+<div class="panel" style="max-width:460px;margin:0 auto">
+  <h1>Forgot password</h1>
+  <% if (message) { %><div class="notice"><%= message %></div><% } %>
+  <% if (devLink) { %>
+    <div class="notice">
+      <strong>Training environment:</strong> no mail server here, so your reset link is:
+      <br><a href="<%= devLink %>"><%= devLink %></a>
+      <br><span class="muted">Notice anything about the token value…?</span>
+    </div>
+  <% } %>
+  <form action="/forgot-password" method="post" class="stack">
+    <label>Account email</label>
+    <input type="email" name="email" autofocus>
+    <button class="btn">Send reset link</button>
+  </form>
+</div>
+<%- include('partials/footer') %>

@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+<div class="panel" style="max-width:420px;margin:0 auto">
+  <h1>Log in</h1>
+  <% if (error) { %><div class="error-box"><%= error %></div><% } %>
+  <form action="/login" method="post" class="stack">
+    <input type="hidden" name="next" value="<%= next %>">
+    <label>Email or username</label>
+    <input type="text" name="email" autofocus>
+    <label>Password</label>
+    <input type="password" name="password">
+    <button class="btn">Log in</button>
+  </form>
+  <p class="muted" style="margin-top:14px">
+    No account? <a href="/register">Sign up</a> · <a href="/forgot-password">Forgot password?</a>
+  </p>
+</div>
+<%- include('partials/footer') %>

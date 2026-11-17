@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+<h1>My orders</h1>
+<div class="panel">
+  <% if (!orders.length) { %>
+    <p class="muted">You have no orders yet.</p>
+  <% } else { %>
+  <table>
+    <thead><tr><th>#</th><th>Status</th><th>Total</th><th>Coupon</th><th></th></tr></thead>
+    <tbody>
+    <% orders.forEach(function(o){ %>
+      <tr>
+        <td>#<%= o.id %></td>
+        <td><span class="badge"><%= o.status %></span></td>
+        <td>$<%= Number(o.total).toFixed(2) %></td>
+        <td class="muted"><%= o.coupon_code || '—' %></td>
+        <td><a href="/orders/<%= o.id %>">details</a></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  <% } %>
+</div>
+<p class="muted">Tip: order detail pages are also exposed as JSON at <code>/api/orders/&lt;id&gt;</code>.
+Order ids are a single sequence shared by every customer on the site — the earliest
+orders start at <code>#1</code>.</p>
+<%- include('partials/footer') %>

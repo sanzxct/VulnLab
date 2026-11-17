@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+<h1>ByteBazaar API</h1>
+<p class="muted">Base URL: <code>/api</code> · JSON over HTTP. This list is not exhaustive — some endpoints are internal/undocumented.</p>
+
+<div class="panel">
+  <table>
+    <thead><tr><th>Method</th><th>Path</th><th>Description</th><th>Auth</th></tr></thead>
+    <tbody>
+      <tr><td>GET</td><td><code>/api/me</code></td><td>Current session / profile</td><td>session</td></tr>
+      <tr><td>GET</td><td><code>/api/products</code></td><td>List all products</td><td>public</td></tr>
+      <tr><td>GET</td><td><code>/api/products/{id}</code></td><td>Product by id</td><td>public</td></tr>
+      <tr><td>GET</td><td><code>/api/orders/{id}</code></td><td>Order detail (JSON)</td><td>session</td></tr>
+      <tr><td>GET</td><td><code>/healthz</code></td><td>Health check</td><td>public</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="notice">
+  Recon tip: the frontend bundle at <code>/js/app.js</code> references more than what's listed here.
+  Undocumented-but-live routes exist. Try a directory buster and read the JavaScript.
+</div>
+<%- include('partials/footer') %>

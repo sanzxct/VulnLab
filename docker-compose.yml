@@ -1,0 +1,113 @@
+# ByteBazaar — Positive Hack Camp training target
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: bytebazaar
+      POSTGRES_PASSWORD: bytebazaar
+      POSTGRES_USER: bytebazaar
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bytebazaar -d bytebazaar"]
+      timeout: 5s
+      interval: 10s
+      retries: 10
+    networks:
+      - bytebazaar
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: ./app
+    image: bytebazaar-app:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      INTERNAL_SERVICE_URL: http://internal.bytebazaar.local
+      NODE_ENV: training
+      PGDATABASE: bytebazaar
+      PGHOST: db
+      PGPASSWORD: bytebazaar
+      PGPORT: "5432"
+      PGUSER: bytebazaar
+      PORT: "8080"
+      SESSION_SECRET: bytebazaar-super-secret-do-not-copy
+    networks:
+      - bytebazaar
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  staging:
+    image: bytebazaar-app:latest
+    command: ["node", "src/server.js"]
+    depends_on:
+      app:
+        condition: service_started
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: training
+      PGDATABASE: bytebazaar
+      PGHOST: db
+      PGPASSWORD: bytebazaar
+      PGPORT: "5432"
+      PGUSER: bytebazaar
+      PORT: "8080"
+      SESSION_SECRET: bytebazaar-super-secret-do-not-copy
+      STAGING: "true"
+    networks:
+      bytebazaar:
+        aliases:
+          - staging.bytebazaar.local
+    ports:
+      - "8085:8080"
+    restart: unless-stopped
+
+  reset:
+    image: bytebazaar-app:latest
+    command: ["node", "src/seed.js", "--loop"]
+    depends_on:
+      app:
+        condition: service_started
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: training
+      PGDATABASE: bytebazaar
+      PGHOST: db
+      PGPASSWORD: bytebazaar
+      PGPORT: "5432"
+      PGUSER: bytebazaar
+      RESET_INTERVAL_MS: "1500000"
+    networks:
+      - bytebazaar
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f 'seed.js' >/dev/null || exit 1"]
+      timeout: 5s
+      interval: 30s
+      retries: 3
+    restart: unless-stopped
+
+  internal:
+    build: ./internal
+    image: bytebazaar-internal:latest
+    environment:
+      PORT: "80"
+      SSRF_FLAG: "FLAG{bytebazaar_ssrf_e3b0c442}"
+    networks:
+      bytebazaar:
+        aliases:
+          - internal.bytebazaar.local
+    restart: unless-stopped
+
+networks:
+  bytebazaar:
+    name: bytebazaar_bytebazaar
+    driver: bridge
+
+volumes:
+  db_data:
+    name: bytebazaar_db_data

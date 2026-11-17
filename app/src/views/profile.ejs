@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+<h1>My profile</h1>
+<% if (flash) { %><div class="notice"><%= flash %></div><% } %>
+<div class="row">
+  <div class="col" style="max-width:300px">
+    <div class="panel" style="text-align:center">
+      <img src="<%= profile.avatar_url %>" alt="" style="width:120px;height:120px;border-radius:50%;object-fit:cover">
+      <h2><%= profile.username %></h2>
+      <p class="muted"><span class="badge"><%= profile.role %></span></p>
+      <p class="muted">Member since <%= new Date(profile.member_since).toISOString().slice(0,10) %></p>
+      <form action="/profile/avatar" method="post" enctype="multipart/form-data" class="stack">
+        <label>Change avatar</label>
+        <input type="file" name="avatar" accept="image/*">
+        <button class="btn ghost">Upload</button>
+      </form>
+    </div>
+  </div>
+  <div class="col">
+    <div class="panel">
+      <h2>Account details</h2>
+      <form action="/profile" method="post" class="stack">
+        <label>Email</label><input type="email" name="email" value="<%= profile.email %>">
+        <label>Full name</label><input type="text" name="full_name" value="<%= profile.full_name %>">
+        <label>Address</label><input type="text" name="address" value="<%= profile.address %>">
+        <label>Bio</label><textarea name="bio"><%= profile.bio %></textarea>
+        <button class="btn">Save changes</button>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

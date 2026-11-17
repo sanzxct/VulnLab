@@ -1,0 +1,9 @@
+# ByteBazaar
+User-agent: *
+Disallow: /admin
+Disallow: /admin/users
+Disallow: /.git/
+Disallow: /api/
+# staging: http://staging.bytebazaar.local/  (debug build)
+# ...vhost doesn't resolve externally; the staging build is served off the same
+# host as prod, one port up (prod :8080 -> staging :8081). Debug endpoint: /debug

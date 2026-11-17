@@ -1,0 +1,16 @@
+<%- include('partials/header') %>
+<div class="panel" style="max-width:420px;margin:0 auto">
+  <h1>Create your account</h1>
+  <% if (error) { %><div class="error-box"><%= error %></div><% } %>
+  <form action="/register" method="post" class="stack">
+    <label>Username</label>
+    <input type="text" name="username" autofocus>
+    <label>Email</label>
+    <input type="email" name="email">
+    <label>Password</label>
+    <input type="password" name="password">
+    <button class="btn">Sign up</button>
+  </form>
+  <p class="muted" style="margin-top:14px">Already have an account? <a href="/login">Log in</a></p>
+</div>
+<%- include('partials/footer') %>

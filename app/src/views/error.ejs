@@ -1,0 +1,11 @@
+<%- include('partials/header') %>
+<div class="panel">
+  <h1><%= title %></h1>
+  <div class="error-box"><%= message %></div>
+  <% if (stack) { %>
+    <p class="muted" style="margin-top:14px">Stack trace (debug build):</p>
+    <div class="pre"><%= stack %></div>
+  <% } %>
+  <p style="margin-top:16px"><a href="/">← Back to ByteBazaar</a></p>
+</div>
+<%- include('partials/footer') %>

@@ -1,0 +1,71 @@
+<%- include('partials/header') %>
+<h1>Your cart</h1>
+<% if (flash) { %><div class="notice"><%= flash %></div><% } %>
+
+<div class="row">
+  <div class="col">
+    <div class="panel">
+      <% if (!items.length) { %>
+        <p class="muted">Your cart is empty. <a href="/">Browse products →</a></p>
+      <% } else { %>
+      <table>
+        <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th></th></tr></thead>
+        <tbody>
+        <% items.forEach(function(it){ %>
+          <tr>
+            <td><%= it.name %></td>
+            <td><%= it.quantity %></td>
+            <td>$<%= (Number(it.price)*it.quantity).toFixed(2) %></td>
+            <td>
+              <form action="/cart/remove" method="post" class="inline">
+                <input type="hidden" name="product_id" value="<%= it.product_id %>">
+                <button class="linkbtn">remove</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+        </tbody>
+      </table>
+      <% } %>
+    </div>
+
+    <div class="panel">
+      <h2>Coupon</h2>
+      <% if (couponLines.length) { %>
+        <table>
+          <thead><tr><th>Code</th><th>Description</th><th>Discount</th></tr></thead>
+          <tbody>
+          <% couponLines.forEach(function(c){ %>
+            <tr><td><%= c.code %></td><td class="muted"><%= c.description %></td><td>-$<%= c.value.toFixed(2) %></td></tr>
+          <% }) %>
+          </tbody>
+        </table>
+        <form action="/cart/coupon/clear" method="post" class="inline"><button class="linkbtn">clear coupons</button></form>
+      <% } %>
+      <form action="/cart/coupon" method="post" class="stack">
+        <label>Have a code? (try WELCOME10, SAVE25, HALFOFF)</label>
+        <input type="text" name="code" placeholder="COUPON CODE">
+        <button class="btn ghost">Apply coupon</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col" style="max-width:340px">
+    <div class="panel">
+      <h2>Summary</h2>
+      <table>
+        <tr><td>Subtotal</td><td style="text-align:right">$<%= subtotal.toFixed(2) %></td></tr>
+        <tr><td>Discount</td><td style="text-align:right">-$<%= discount.toFixed(2) %></td></tr>
+        <tr><th>Total</th><th style="text-align:right">$<%= total.toFixed(2) %></th></tr>
+      </table>
+      <form action="/cart/checkout" method="post" class="stack">
+        <label>Ship to (name)</label>
+        <input type="text" name="ship_name" value="<%= currentUser.full_name || currentUser.username %>">
+        <label>Address</label>
+        <input type="text" name="ship_address" value="<%= currentUser.address || '' %>">
+        <button class="btn" <%= items.length ? '' : 'disabled' %>>Place order</button>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

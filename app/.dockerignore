@@ -1,0 +1,8 @@
+# The exposed-git recon artifact (#11a) is stored as git_exposed/dotgit — a
+# normal directory, NOT a literal .git — so it survives being committed to an
+# outer repo and is not affected by any .git ignore rule.
+node_modules
+npm-debug.log
+*.log
+src/public/uploads/*
+!src/public/uploads/.gitkeep

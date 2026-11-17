@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= typeof title !== 'undefined' ? title : 'ByteBazaar' %> · ByteBazaar</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <!--
+    ByteBazaar — Positive Hack Camp training target.
+    Warm-up (#1): every response carries an X-PHC-Intercept-Reward header.
+    Intercept this request in your proxy to grab your first flag.
+  -->
+</head>
+<body<%= config.staging ? ' data-staging="1"' : '' %>>
+  <% if (config.staging) { %><div class="staging-ribbon">STAGING · staging.bytebazaar.local · debug build</div><% } %>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">Byte<span>Bazaar</span></a>
+      <form class="search" action="/search" method="get" role="search">
+        <input type="text" name="q" placeholder="Search products…" aria-label="Search">
+        <button type="submit">Search</button>
+      </form>
+      <nav class="links">
+        <a href="/api/docs">API</a>
+        <a href="/cart">Cart</a>
+        <% if (currentUser) { %>
+          <a href="/orders">Orders</a>
+          <a href="/seller">Sell</a>
+          <a href="/profile" class="me"><%= currentUser.username %></a>
+          <a id="admin-link" class="admin-link" href="/admin" style="display:none">Admin</a>
+          <form action="/logout" method="post" class="inline"><button class="linkbtn">Logout</button></form>
+        <% } else { %>
+          <a href="/login">Log in</a>
+          <a href="/register" class="cta">Sign up</a>
+        <% } %>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
